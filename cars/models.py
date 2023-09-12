@@ -88,6 +88,12 @@ class Car (models.Model):
         ('6', '6'),
     )
 
+    drivetrain_choices = (
+        ('RWD','RWD'),
+        ('FWD','FWD'),
+        ('AWD','AWD'),
+    )
+
     car_title = models.CharField(max_length=100,)
     model = models.CharField(max_length=100,)
     city = models.CharField(max_length=50,)
@@ -96,7 +102,7 @@ class Car (models.Model):
     year = models.IntegerField(('year'), choices=year_choice)
     condition = models.CharField(max_length=50,)
     price = models.IntegerField()
-    description = RichTextField(max_length=500,)
+    description = RichTextField(max_length=1000,)
     car_image = models.ImageField(upload_to='photos/%Y/%M/%D/')
     car_image1 = models.ImageField(upload_to='photos/%Y/%M/%D/', blank=True)
     car_image2 = models.ImageField(upload_to='photos/%Y/%M/%D/', blank=True)
@@ -107,6 +113,7 @@ class Car (models.Model):
     transmission = models.CharField(max_length=50,)
     interior = models.CharField(max_length=50,)
     miles = models.IntegerField()
+    drivetrain = models.CharField(choices=drivetrain_choices, max_length=50, blank=True)
     doors = models.CharField(choices=door_choices , max_length=50,)
     passengers= models.CharField(max_length=50,)
     vin_no= models.CharField(max_length=50,)
