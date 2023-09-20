@@ -56,7 +56,7 @@ ul {
 }
 
 .twitter:hover {
-    color: #56d7fe !important;
+    color: #ed0f0f !important;
 }
 
 .google:hover {
@@ -78,7 +78,7 @@ ul {
 }
 
 .twitter-bg {
-    background: #33CCFF;
+    background: #ed0f0f;
     color: #fff;
 }
 
@@ -108,7 +108,7 @@ ul {
 }
 
 .twitter-bg:hover {
-    background: #56d7fe;
+    background: #ed0f0f;
     color: #fff;
 }
 
@@ -3335,7 +3335,7 @@ input[type=checkbox]:checked + label:before {
 }
 
 .team-1 .twitter-bg:hover {
-    background: #56d7fe!important;
+    background: #ed0f0f!important;
 }
 
 .team-1 .google-bg:hover {
@@ -3439,7 +3439,7 @@ input[type=checkbox]:checked + label:before {
 }
 
 .team-2 .twitter-bg:hover {
-    background: #56d7fe!important;
+    background: #ed0f0f!important;
 }
 
 .team-2 .google-bg:hover {
@@ -3923,7 +3923,7 @@ footer {
 }
 
 .footer .twitter-bg:hover {
-    background: #56d7fe!important;
+    background: #ed0f0f!important;
 }
 
 .footer .google-bg:hover {
