@@ -16,7 +16,7 @@
             <h1>{{single_car.car_title}}</h1>
             <ul class="breadcrumbs">
                 <li><a href="{% url 'home' %}">Home</a></li>
-                <li class="active">{{single_car.car_title}}</li>
+                <li class="active">{{single_car.car_title}} {{single_car.model}}</li>
             </ul>
         </div>
     </div>
@@ -31,8 +31,10 @@
                 <div class="car-details-section">
                     <!-- Heading start -->
                     <div class="heading-car clearfix">
+
+                        {% include 'includes/messages.html' %}
                         <div class="pull-left">
-                            <h3>{{single_car.car_title}}</h3>
+                            <h3>{{single_car.car_title}} {{single_car.model}}</h3>
                             <h6>
                                 <i class="flaticon-pin"></i>{{single_car.state}} {{single_car.city}}
                             </h6>
@@ -48,25 +50,25 @@
                                 <img src="{{single_car.car_image.url}}" class="img-fluid" alt="slider-car">
                             </div>
 
-                            {% if car.car_image1 %}
+                            {% if single_car.car_image1 %}
                             <div class="item carousel-item" data-slide-number="1">
                                 <img src="{{single_car.car_image1.url}}" class="img-fluid" alt="slider-car">
                             </div>
                             {% endif %}
 
-                            {% if car.car_image2 %}
+                            {% if single_car.car_image2 %}
                             <div class="item carousel-item" data-slide-number="2">
                                 <img src="{{single_car.car_image2.url}}" class="img-fluid" alt="slider-car">
                             </div>
                             {% endif %}
 
-                            {% if car.car_image3 %}
+                            {% if single_car.car_image3 %}
                             <div class="item carousel-item" data-slide-number="4">
                                 <img src="{{single_car.car_image3.url}}" class="img-fluid" alt="slider-car">
                             </div>
                             {% endif %}
 
-                            {% if car.car_image4 %}
+                            {% if single_car.car_image4 %}
                             <div class="item carousel-item" data-slide-number="5">
                                 <img src="{{single_car.car_image4.url}}" class="img-fluid" alt="slider-car">
                             </div>
@@ -76,30 +78,45 @@
                         <div class="carousel-indicators-section clearfix">
                             <ul class="carousel-indicators car-properties list-inline nav nav-justified">
                                 <li class="list-inline-item active">
+
                                     <a id="carousel-selector-0" class="selected" data-slide-to="0" data-target="#carDetailsSlider">
                                         <img src="{{single_car.car_image.url}}" class="img-fluid" alt="small-car">
                                     </a>
                                 </li>
+                                {% if single_car.car_image1 %}
                                 <li class="list-inline-item">
                                     <a id="carousel-selector-1" data-slide-to="1" data-target="#carDetailsSlider">
                                         <img src="{{single_car.car_image1.url}}" class="img-fluid" alt="small-car">
                                     </a>
                                 </li>
+                                {% endif %}
+
+                                {% if single_car.car_image2 %}
                                 <li class="list-inline-item">
                                     <a id="carousel-selector-2" data-slide-to="2" data-target="#carDetailsSlider">
                                         <img src="{{single_car.car_image2.url}}" class="img-fluid" alt="small-car">
                                     </a>
                                 </li>
+                                {% endif %}
+
+
+                                {% if single_car.car_image3 %}
                                 <li class="list-inline-item">
                                     <a id="carousel-selector-3" data-slide-to="3" data-target="#carDetailsSlider">
                                         <img src="{{single_car.car_image3.url}}" class="img-fluid" alt="small-car">
                                     </a>
                                 </li>
+                                {% endif %}
+
+                                {% if single_car.car_image4 %}
                                 <li class="list-inline-item">
                                     <a id="carousel-selector-4" data-slide-to="4" data-target="#carDetailsSlider">
                                         <img src="{{single_car.car_image4.url}}" class="img-fluid" alt="small-car">
                                     </a>
                                 </li>
+                                {% endif %}
+
+
                             </ul>
                         </div>
                     </div>
@@ -214,21 +231,36 @@
                         <div class="modal-content">
                           <div class="contact-dealer modal-header">
                             <!-- <h5 class="modal-title" id="inquiryModalLabel">Contact Dealer</h5> -->
-                            <img src="img/logos/logo-black-white.png">
+                            <center><img src="{% static 'img/logos/logo-black-white.png' %}"></center>
                             <button type="button" class="close" data-dismiss="modal">
                               <span>&times;</span>
                             </button>
                           </div>
                           <div class="modal-body">
-                            <form action="#">
+                            <form action="{% url 'inquiry' %}" method="post">
+                                {% csrf_token %}
+                                {% if user.is_authenticated %}
+                                <input type="hidden" name="user_id" value="{{user.id}}">
+                                {% else %}
+                                <input type="hidden" name="user_id" value="0">
+                                {% endif %}
+
+                                
+
+                                <input type="hidden" name="car_id" value="{{single_car.id}}">
+
+
                                 <div class="form-group">
                                   <label for="name" class="col-form-label">Hello, My Name is</label>
                                   <div class="row">
                                     <div class="col">
-                                      <input type="text" name="first_name" class="form-control" placeholder="First Name" required>
+                                      <input type="text" name="first_name" class="form-control" placeholder="First Name"
+                                      {% if user.is_authenticated %} value="{{user.first_name}}" {% endif %}  required  >
                                     </div>
+
                                     <div class="col">
-                                      <input type="text" name="last_name" class="form-control" placeholder="Last Name" required>
+                                      <input type="text" name="last_name" class="form-control" placeholder="Last Name" 
+                                      {% if user.is_authenticated %} value="{{user.last_name}}" {% endif %} required>
                                     </div>
                                   </div>
                                 </div>
@@ -242,7 +274,7 @@
                                     </div>
                                 
                                 <div class="form-group">
-                                  <input type="text" name="car_title" class="form-control" value="LAMBORGHINI HURACÁN." readonly>
+                                  <input type="text" name="car_title" class="form-control" value="{{single_car.car_title}} {{single_car.model}} " readonly>
                                 </div>
                                
                                 <div class="form-group">
@@ -261,11 +293,12 @@
                                   <div class="row">
                                     <div class="col">
                                         <label for="name" class="col-form-label">You can reach me by email at</label>
-                                      <input type="email" name="email" class="form-control" placeholder="Email Address" required>
+                                      <input type="email" name="email" class="form-control" placeholder="Email Address" required
+                                      {% if user.is_authenticated %} value="{{user.email}}" {% endif %}>
                                     </div>
                                     <div class="col">
                                         <label for="phone" class="col-form-label">or by phone at</label>
-                                      <input type="text" name="phone" placeholder="Phone Number (optional)" class="form-control">
+                                      <input type="text" name="phone_number" placeholder="Phone Number (optional)" class="form-control">
                                     </div>
                                   </div>
                                 </div>
